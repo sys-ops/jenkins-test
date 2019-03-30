@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        //be sure to replace "willbla" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "sysopstest/train-schedule"
+        // Docker Hub username/app name
+        DOCKER_IMAGE_NAME = "andrzejewskidan/train-schedule"
     }
     stages {
         stage('Build') {
@@ -31,7 +31,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_sysopstest') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_andrzejewskidan') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
@@ -48,7 +48,7 @@ pipeline {
                 //implement Kubernetes deployment here
                 kubernetesDeploy(
                   kubeconfigId: 'kubeconfig',
-                  configs: 'train-schedule-kube-da.yaml',
+                  configs: 'test-kubernetes-continous-deploy.yaml',
                   enableConfigSubstitution: true
                 )
             }
